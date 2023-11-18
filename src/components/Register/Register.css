@@ -7,6 +7,7 @@
   justify-content: center;
   align-items: center;
   box-sizing: border-box;
+  min-height: 83vh;
 }
 
 .register__form {
@@ -166,13 +167,13 @@
 
   .register__button {
     font-size: 12px;
-    line-height: 1.25;
+    line-height: normal;
     margin-top: 130px;
   }
 
   .register__support {
     font-size: 12px;
-    line-height: 1.25;
+    line-height: normal;
   }
 
   .register__link {

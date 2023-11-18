@@ -4,103 +4,109 @@
 }
 
 .techs__container {
-  max-width: 1280px;
   min-width: 320px;
+  max-width: 1280px;
+  box-sizing: border-box;
   margin: 101px auto 0;
   padding: 0 70px;
-  box-sizing: border-box;
 }
 
 .techs-info {
-  display: flex;
   flex-direction: column;
+  display: flex;
   text-align: center;
   align-items: center;
 }
 
-.techs-info__description {
-  font-size: 50px;
-  font-style: normal;
-  font-weight: 400;
+.techs__subtitle {
   line-height: 58px;
-  letter-spacing: -2px;
-  margin: 0;
-  padding: 89px 0 26px;
-}
-
-.techs-info__paragraph {
-  max-width: 460px;
-  font-size: 14px;
-  font-style: normal;
+  font-size: 50px;
   font-weight: 400;
-  line-height: 20px;
-  letter-spacing: -0.56px;
+  font-style: normal;
+  letter-spacing: -2px;
+  padding: 89px 0 26px;
   margin: 0;
-  padding: 0;
 }
 
-.techs__spisok {
-  display: flex;
+.techs-info__article {
+  line-height: 20px;
+  font-size: 14px;
+  font-weight: 400;
+  font-style: normal;
+  letter-spacing: -0.56px;
+  padding: 0;
+  margin: 0;
+  max-width: 460px;
+}
+
+.techs__list {
   gap: 10px;
+  display: flex;
   margin: 0;
   padding: 100px 10px;
 }
 
-.techs__spisok-element {
+.techs__list-item {
   min-width: 90px;
-  height: 60px;
   width: 100%;
   border-radius: 10px;
-  background: #303030;
+  height: 60px;
   display: flex;
-  align-items: center;
+  background: #303030;
   justify-content: center;
+  align-items: center;
   transition: all 0.1s ease;
 }
 
-.techs__spisok-element:hover {
-  transform: scale(1.05);
+.techs__list-item:hover {
   background-color: rgba(61, 220, 132, 1);
   opacity: 0.7;
+  transform: scale(1.05);
 }
 
-.techs__spisok-link {
-  text-decoration: none;
-  color: #fff;
+.techs__list {
   font-size: 14px;
-  font-style: normal;
-  font-weight: 400;
+  color: #fff;
   line-height: normal;
+  font-weight: 400;
+  text-decoration: none;
+  font-style: normal;
   letter-spacing: -0.56px;
 }
 
 @media screen and (max-width: 800px) {
-  .techs__spisok {
+  .techs__list {
+    justify-content: center;
+    display: grid;
+    grid-template-columns: 48% 48%;
     padding: 86px 10px;
   }
 
   .techs__container {
-    margin-top: 91px;
     padding: 0 50px;
+    margin-top: 91px;
   }
-  .techs-info__description {
+
+  .techs__subtitle {
     padding: 80px 0 22px;
   }
-  .techs-info__paragraph {
+
+  .techs-info__article {
     max-width: 440px;
-    font-size: 12px;
     line-height: 18px;
-    letter-spacing: -0.48px;
-  }
-
-  .techs__spisok-link {
     font-size: 12px;
     letter-spacing: -0.48px;
+
   }
 
-  .techs__spisok-element {
-    min-width: 84px;
+  .techs__list {
+    letter-spacing: -0.48px;
+    font-size: 12px;
+  }
+
+  .techs__list-item {
     height: 57px;
+    min-width: 84px;
   }
 }
 
@@ -109,24 +115,11 @@
     margin-top: 51px;
   }
 
-  .techs-info__description {
-    font-size: 30px;
-    line-height: normal;
+  .techs__subtitle {
     letter-spacing: -1.2px;
     padding: 55px 0 24px;
-  }
-
-  .techs-info__paragraph {
-    font-size: 11px;
-    line-height: 16px;
-    letter-spacing: -0.44px;
-  }
-
-  .techs__spisok {
-    display: grid;
-    justify-content: center;
-    grid-template-columns: 48% 48%;
-    padding: 50px 10px 90px;
+    font-size: 30px;
+    line-height: normal;
   }
 }
 

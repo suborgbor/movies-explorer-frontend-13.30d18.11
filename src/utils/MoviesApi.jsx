@@ -7,4 +7,4 @@ const getMovies = () =>
     }
     return Promise.reject(res.status);
   });
-export { getMovies, MOVIES_URL };
+export { getMovies, MOVIES_URL, };

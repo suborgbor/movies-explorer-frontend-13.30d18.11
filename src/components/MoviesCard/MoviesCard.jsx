@@ -1,67 +1,45 @@
-import useFormWithValidation from '../../hooks/useFormWithValidation';
-import { durationFormat } from '../../utils/utils';
-import './MoviesCard.css';
+import { durationMovies } from '../../utils/utils';
+import useFormValidation from '../../hooks/useFormValidation';
 import { useLocation } from 'react-router-dom';
+import './MoviesCard.css';
 
-const MoviesCard = ({
-  movie,
-  onToggleSave,
-  onDeleteSave,
-  checkSavedMovies,
-}) => {
-  const { values } = useFormWithValidation();
+const MoviesCard = ({movie, addMovie, onDeleteFilm, checkSavedMovies, }) => {
   const path = useLocation().pathname;
+  const { values } = useFormValidation();
+  
   const isSaved = checkSavedMovies(movie);
 
-  const handleSaveClick = () => {
-    !isSaved && onToggleSave(movie);
-  };
-
-  const handleDeleteClick = () => {
-    onDeleteSave(movie);
-  };
+  const handleSaveClick = () => {!isSaved && addMovie(movie)};
+  const handleDeleteClick = () => {onDeleteFilm(movie)};
 
   return (
     <>
-      <li className="movies-card">
-        <article className="movies-card__item">
-          <a
-            target="_blank"
-            rel="noreferrer"
-            href={movie.trailerLink}
-          >
-            <img
-              src={movie.image}
-              alt={`Отрывок из фильма ${movie.nameRU}`}
-              className="movies-card__image"
-            />
+      <li className="movies-box">
+        <article className="movies-box__item">
+          <a target="_blank" rel="noreferrer" href={movie.trailerLink}>
+            <img src={movie.image} alt={`Отрывок из фильма ${movie.nameRU}`} className="movies-box__image"/>
           </a>
         </article>
-        <div className="movies-card__description">
-          <h2 className="movies-card__title">{movie.nameRU}</h2>
+        <div className="movies-box__description">
+          <h2 className="movies-box__subtitle">{movie.nameRU}</h2>
           {path === '/movies' ? (
-            <label className="movies-card__label">
+            <label className="movies-box__label">
               <input
-                className="movies-card__input"
+                className="movies-box__input"
                 type="checkbox"
-                value={values}
                 onChange={!isSaved ? handleSaveClick : handleDeleteClick}
                 checked={isSaved}
+                value={values}                   
               />
-              <span className="movies-card__checkbox"></span>
+              <span className="movies-box__checkbox"></span>
             </label>
           ) : (
-            <button
-              type="button"
-              className="movies-card__button movies-card__button_type_unsave"
-              aria-label="Удалить фильм из сохранённых"
-              title="Удалить фильм из сохранённых"
-              onClick={handleDeleteClick}
-            ></button>
-          )}
+            <button type="button" className="movies-box__button movies-box__button_type_on"  aria-label="Удалить фильм из сохранённых" title="Удалить фильм из сохранённых" 
+            onClick={handleDeleteClick}></button>
+            )}
         </div>
-        <span className="movies-card__duration">
-          {durationFormat(movie.duration)}
+        <span className="movies-box__duration">
+          {durationMovies(movie.duration)}
         </span>
       </li>
     </>

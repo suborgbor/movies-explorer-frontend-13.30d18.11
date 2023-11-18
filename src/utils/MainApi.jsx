@@ -1,58 +1,55 @@
 class MainApi {
-  #url;
-  #headers;
-  #authHeaders;
-  constructor({ url, headers }) {
-    this.#url = url;
-    this.#headers = headers;
-    this.#authHeaders = null;
+  constructor({ apiUrl, requestHeaders }) {
+    this.apiUrl = apiUrl;
+    this.requestHeaders = requestHeaders;
+    this.authHeaders = null;
   }
 
-  deleteAuthHeaders = () => (this.#authHeaders = null);
+  deleteAuthHeaders = () => (this.authHeaders = null);
 
   setAuthHeaders = (token) => {
-    this.#authHeaders = {
-      ...this.#headers,
+    this.authHeaders = {
+      ...this.requestHeaders,
       authorization: `Bearer ${token}`,
     };
   };
 
-  #handleReply = (res) =>
-    res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`);
+  handleReply = (response) =>
+    response.ok ? response.json() : Promise.reject(`Error: ${response.status}`);
 
-  #makeRequest = (method, path, body, notSave) => {
-    const reqOptions = {
+  makeRequest = (method, path, body, notSave) => {
+    const requestOptions = {
       method: method,
-      headers: notSave ? this.#headers : this.#authHeaders,
+      headers: notSave ? this.requestHeaders : this.authHeaders,
     };
-    if (body) reqOptions.body = JSON.stringify(body);
+    if (body) requestOptions.body = JSON.stringify(body);
 
-    return fetch(`${this.#url}${path}`, reqOptions).then(this.#handleReply);
+    return fetch(`${this.apiUrl}${path}`, requestOptions).then(this.handleReply);
   };
 
-  registerUser = (regData) =>
-    this.#makeRequest('POST', '/signup', regData, 'notSave');
+  registering = (regData) =>
+    this.makeRequest('POST', '/signup', regData, 'notSave');
 
-  loginUser = (loginData) =>
-    this.#makeRequest('POST', '/signin', loginData, 'notSave');
+  logining = (loginData) =>
+    this.makeRequest('POST', '/signin', loginData, 'notSave');
 
-  updateUserData = (userData) => {
-    return this.#makeRequest('PATCH', '/users/me', userData);
-  };
+  updatingData = (userData) =>
+    this.makeRequest('PATCH', '/users/me', userData);
 
-  getUserInfo = () => this.#makeRequest('GET', '/users/me');
+  getUserInfo = () => this.makeRequest('GET', '/users/me');
 
-  getSavedMovies = () => this.#makeRequest('GET', '/movies');
+  getSavedMovies = () => this.makeRequest('GET', '/movies');
 
-  createMovie = (movie) => this.#makeRequest('POST', '/movies/', movie);
+  createMovie = (movie) => this.makeRequest('POST', '/movies/', movie);
 
-  deleteMovie = (id) => this.#makeRequest('DELETE', `/movies/${id}`);
+  deleteMovie = (id) => this.makeRequest('DELETE', `/movies/${id}`);
 }
 
 const api = new MainApi({
-  url: 'https://api.katydiplom.nomoredomainsrocks.ru',
-  headers: {
+  apiUrl: 'https://api.katydiplom.nomoredomainsrocks.ru',
+  requestHeaders: {
     'Content-Type': 'application/json',
   },
 });
+
 export default api;

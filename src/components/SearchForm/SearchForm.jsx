@@ -1,34 +1,22 @@
 import './SearchForm.css';
 import FilterCheckbox from '../FilterCheckbox/FilterCheckbox';
-import useFormWithValidation from '../../hooks/useFormWithValidation';
+import useFormValidation from '../../hooks/useFormValidation';
 
-const SearchForm = ({
-  onSearch,
-  onShortFilmChange,
-  shortFilm,
-  searchQuery = '',
-}) => {
-  const { values, handleChange } = useFormWithValidation({
-    search: searchQuery,
-  });
+const SearchForm = ({ searchMovies, onShortChange, shortMovie, initialSearchValue = '' }) => {
+  const { values, handleChange } = useFormValidation({ search: initialSearchValue });
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    onSearch(values.search);
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    searchMovies(values.search);
   };
 
-  const handleShortFilmToggle = (e) => {
-    onShortFilmChange(e.target.checked);
+  const changeShort = (event) => {
+    onShortChange(event.target.checked);
   };
 
   return (
     <section className="search">
-      <form
-        className="search__form"
-        name="search"
-        noValidate
-        onSubmit={handleSubmit}
-      >
+      <form className="search__form" name="search" Validate onSubmit={handleSubmit}>
         <div className="search__container">
           <input
             className="search__input"
@@ -40,17 +28,11 @@ const SearchForm = ({
             value={values.search || ''}
             onChange={handleChange}
           />
-          <button
-            className="search__button"
-            type="submit"
-          ></button>
+          <button className="search__button" type="submit"></button>
         </div>
-        <span className="search__error"></span>
+        <span className="search__error">Введите ключевое слово</span>
 
-        <FilterCheckbox
-          isChecked={shortFilm}
-          onCheckboxChange={handleShortFilmToggle}
-        />
+        <FilterCheckbox isChecked={shortMovie} onChangeShort={changeShort} />
       </form>
     </section>
   );

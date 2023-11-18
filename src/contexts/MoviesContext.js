@@ -2,63 +2,46 @@ import { createContext, useContext, useEffect, useState } from 'react';
 
 const MoviesContext = createContext();
 
-export const useMoviesContext = () => {
-  return useContext(MoviesContext);
-};
+export const useMoviesContext = () => {return useContext(MoviesContext)};
 
 export const MoviesProvider = ({ children }) => {
-  const [searchQuery, setSearchQuery] = useState(restoreSearchQuery());
-  const [searched, setSearched] = useState(restoreSearched());
-  const [shortFilm, setShortFilm] = useState(restoreShortFilm());
-  const [foundMovies, setFoundMovies] = useState(restoreFoundMovies());
+  const [initialSearchValue, setInitialSearchValue] = useState(onInitialSearchValue());
+  const [searched, setSearchedMovies] = useState(getSearched());
+  const [shortMovie, setShortMovie] = useState(getShortMovie());
+  const [foundMovies, setFoundMovies] = useState(getFoundMovies());
 
-  function restoreSearchQuery() {
-    const storedSearchQuery = localStorage.getItem('searchQuery') ?? '';
-    return storedSearchQuery;
+  function onInitialSearchValue() { const setInitialSearchValue = localStorage.getItem('initialSearchValue') ?? '';
+    return setInitialSearchValue;
   }
 
-  function restoreSearched() {
-    const storedSearched = localStorage.getItem('searched') ?? false;
-    return storedSearched === 'true';
+  function getSearched() { const onSearched = localStorage.getItem('searched') ?? false;
+    return onSearched === 'true';
   }
 
-  function restoreShortFilm() {
-    const storedShortFilm = localStorage.getItem('shortFilm') ?? false;
-    return storedShortFilm === 'true';
+  function getShortMovie() { const onShortMovie = localStorage.getItem('shortMovie') ?? false;
+    return onShortMovie === 'true';
   }
 
-  function restoreFoundMovies() {
-    const storedFoundMovies = localStorage.getItem('foundMovies') ?? '[]';
-    return JSON.parse(storedFoundMovies);
+  function getFoundMovies() { const onFoundMovies = localStorage.getItem('foundMovies') ?? '[]';
+    return JSON.parse(onFoundMovies);
   }
 
-  const resetMoviesContext = () => {
-    setSearchQuery('');
-    setSearched(false);
-    setShortFilm(false);
+  const cleanMoviesContext = () => {
+    setInitialSearchValue('');
+    setSearchedMovies(false);
+    setShortMovie(false);
     setFoundMovies([]);
   };
 
   useEffect(() => {
-    localStorage.setItem('searchQuery', searchQuery);
+    localStorage.setItem('initialSearchValue', initialSearchValue);
     localStorage.setItem('searched', searched);
-    localStorage.setItem('shortFilm', shortFilm);
-    if (foundMovies.length > 0) {
-      localStorage.setItem('foundMovies', JSON.stringify(foundMovies));
-    }
-  }, [searchQuery, searched, shortFilm, foundMovies]);
+    localStorage.setItem('shortMovie', shortMovie);
+    if (foundMovies.length > 0) { localStorage.setItem('foundMovies', JSON.stringify(foundMovies))}
+  }, [initialSearchValue, searched, shortMovie, foundMovies]);
 
-  const contextValue = {
-    searchQuery,
-    setSearchQuery,
-    searched,
-    setSearched,
-    shortFilm,
-    setShortFilm,
-    foundMovies,
-    setFoundMovies,
-    resetMoviesContext,
-  };
+  const contextValue = { initialSearchValue, setInitialSearchValue, searched, setSearchedMovies, shortMovie,
+    setShortMovie, foundMovies, setFoundMovies, cleanMoviesContext, };
 
   return (
     <MoviesContext.Provider value={contextValue}>

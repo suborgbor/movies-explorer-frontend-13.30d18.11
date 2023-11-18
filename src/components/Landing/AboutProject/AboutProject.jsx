@@ -4,24 +4,24 @@ const AboutProject = () => {
   return (
     <>
       <section className="about-project">
-        <a name="about-project"></a>
+        <a href="#about-project" name="about-project"> </a>
         <div className="about-project__container">
-          <h2 className="section-title">О проекте</h2>
+          <h2 className="about-project__title ">О проекте</h2>
           <div className="about-project-info">
             <article className="two-columns">
-              <h3 className="two-columns__main-text">
+              <h3 className="about-project__subtitle">
                 Дипломный проект включал 5 этапов
               </h3>
-              <p className="two-columns__main-paragraph">
+              <p className="about-project__description">
                 Составление плана, работу над бэкендом, вёрстку, добавление
                 функциональности и финальные доработки.
               </p>
             </article>
             <article className="two-columns">
-              <h3 className="two-columns__main-text">
+              <h3 className="about-project__subtitle">
                 На выполнение диплома ушло 5 недель
               </h3>
-              <p className="two-columns__main-paragraph">
+              <p className="about-project__description">
                 У каждого этапа был мягкий и жёсткий дедлайн, которые нужно было
                 соблюдать, чтобы успешно защититься.
               </p>
@@ -29,12 +29,12 @@ const AboutProject = () => {
           </div>
           <div className="about-project__scheme">
             <div className="about-project__backend">
-              <span className="about-project__backend-duration">1 неделя</span>
-              <span className="about-project__scheme-title">Back-end</span>
+              <span className="about-project__progress about-project__progress_type_backend">1 неделя</span>
+              <span className="about-project__text">Back-end</span>
             </div>
             <div className="about-project__frontend">
-              <span className="about-project__frontend-duration">4 недели</span>
-              <span className="about-project__scheme-title">Front-end</span>
+              <span className="about-project__progress">4 недели</span>
+              <span className="about-project__text">Front-end</span>
             </div>
           </div>
         </div>
