@@ -8,30 +8,30 @@ const Portfolio = () => {
         <ul className="portfolio__list">
           <li className="portfolio__element">
             <a
-              href="https://1qqoo.github.io/how-to-learn/"
+              href="https://ekagor.github.io/how-to-learn/"
               target="_blank"
               rel="noopener noreferrer"
-              className="portfolio__link"
+              className="portfolio__subtitle"
             >
               Статичный сайт
             </a>
           </li>
           <li className="portfolio__element">
             <a
-              href="https://1qqoo.github.io/russian-travel/"
+              href="https://ekagor.github.io/russian-travel/"
               target="_blank"
               rel="noopener noreferrer"
-              className="portfolio__link"
+              className="portfolio__subtitle"
             >
               Адаптивный сайт
             </a>
           </li>
           <li className="portfolio__element">
             <a
-              href="https://1qqoo.github.io/mesto/"
+              href="https://ekagor.github.io/react-mesto-auth/"
               target="_blank"
               rel="noopener noreferrer"
-              className="portfolio__link"
+              className="portfolio__subtitle"
             >
               Одностраничное приложение
             </a>

@@ -1,91 +1,82 @@
 import { useState } from 'react';
+import { useLocation } from 'react-router-dom'
 import useResize from '../../hooks/useResize';
-import MoviesCard from '../MoviesCard/MoviesCard';
 import './MoviesCardList.css';
-import {
-  ADDED_MOVIES_AMOUNT,
-  MOVIES_AMOUNT,
-  SCREEN_SIZE,
-} from '../../utils/constants';
+import MoviesCard from '../MoviesCard/MoviesCard';
+import {PLUS_INIT_CARDS, INIT_CARDS, VIEW_SIZE,} from '../../utils/constants';
 
-const MoviesCardList = ({
-  movies,
-  onToggleSave,
-  onDeleteSave,
-  checkSavedMovies,
-  searchQuery,
-  shortFilm,
-  searched,
-}) => {
-  const screenWidth = useResize();
-  let cardsToShow;
+const MoviesCardList = ({movies, addMovie, onDeleteFilm, checkSavedMovies, initialSearchValue, shortMovie, searched, firstEntrance}) => {
+  const { pathname } = useLocation()
+  const getScreen = useResize();
+  let listView;
 
-  if (screenWidth >= SCREEN_SIZE.L) {
-    cardsToShow = MOVIES_AMOUNT.L;
-  } else if (screenWidth >= SCREEN_SIZE.M) {
-    cardsToShow = MOVIES_AMOUNT.M;
-  } else {
-    cardsToShow = MOVIES_AMOUNT.S;
+  switch(true) {
+    case (getScreen >= VIEW_SIZE.L):
+      listView = INIT_CARDS.L;
+      break;
+    case (getScreen >= VIEW_SIZE.M):
+      listView = INIT_CARDS.M;
+      break;
+    default:
+      listView = INIT_CARDS.S;
+      break;
   }
 
-  const [visibleCards, setVisibleCards] = useState(cardsToShow);
+  const [cardsShow, setCardsShow] = useState(listView);
 
-  const filteredMovies = searched
+  const filmFiltered = searched
     ? movies
         .filter((movie) => {
-          const movieNameRU = (movie.nameRU || '').toLowerCase();
-          const movieNameEN = (movie.nameEN || '').toLowerCase();
-
-          const query = searchQuery || '';
-
-          const includesSearchQuery =
-            movieNameRU.includes(query.toLowerCase()) ||
-            movieNameEN.includes(query.toLowerCase());
-
-          return includesSearchQuery && (!shortFilm || movie.duration <= 40);
+          const movieNameRU = (movie.nameRU ? movie.nameRU : '').toLowerCase();
+          const movieNameEN = (movie.nameEN ? movie.nameEN : '').toLowerCase();
+          const search = initialSearchValue || '';
+          const transformInitialSearchValue = movieNameRU.includes(search.toLowerCase()) || movieNameEN.includes(search.toLowerCase());
+          return transformInitialSearchValue && (!shortMovie || movie.duration <= 40);
         })
-        .slice(0, visibleCards)
+        .slice(0, cardsShow)
     : [];
 
-  const loadMoreCards = () => {
-    let newVisibleCards;
+    const cardsLoading = () => {
+      let cardsShowing;
+    
+      switch (true) {
+        case (getScreen >= VIEW_SIZE.L):
+          cardsShowing = cardsShow + PLUS_INIT_CARDS.L;
+          break;
+        case (getScreen >= VIEW_SIZE.M):
+          cardsShowing = cardsShow + PLUS_INIT_CARDS.M;
+          break;
+        default:
+          cardsShowing = cardsShow + PLUS_INIT_CARDS.S;
+          break;
+      }
+    
+      setCardsShow(cardsShowing);
+    };
 
-    if (screenWidth >= SCREEN_SIZE.L) {
-      newVisibleCards = visibleCards + ADDED_MOVIES_AMOUNT.L;
-    } else if (screenWidth >= SCREEN_SIZE.M) {
-      newVisibleCards = visibleCards + ADDED_MOVIES_AMOUNT.M;
-    } else {
-      newVisibleCards = visibleCards + ADDED_MOVIES_AMOUNT.S;
-    }
-    setVisibleCards(newVisibleCards);
-  };
-
-  const isLoadMoreVisible = visibleCards === filteredMovies.length;
+  const isShowing = cardsShow === filmFiltered.length;
+  console.log(firstEntrance)
 
   return (
-    <section className="movies-cards">
-      {searched && filteredMovies.length === 0 ? (
-        <p>Поиск не дал результатов</p>
+    <section className="movies-lists">
+      {( pathname === '/movies' && filmFiltered.length === 0 && !firstEntrance) ? (
+        <p className='movies__serch-error'>Ничего не найдено</p>
       ) : (
-        <ul className="movies-cards__list">
-          {filteredMovies.map((movie) => (
+        <ul className="movies-lists__list">
+          {filmFiltered.map((movie) => (
             <MoviesCard
-              onDeleteSave={onDeleteSave}
-              onToggleSave={onToggleSave}
-              movie={movie}
-              key={movie._id || movie.movieId}
               checkSavedMovies={checkSavedMovies}
+              addMovie={addMovie}
+              movie={movie}
+              onDeleteFilm={onDeleteFilm}
+              key={movie._id || movie.movieId}              
             />
           ))}
         </ul>
       )}
 
-      {isLoadMoreVisible && (
-        <button
-          type="button"
-          className="movies-cards__add-button"
-          onClick={loadMoreCards}
-        >
+      {isShowing && (
+        <button type="button" className="movies-lists__add-button" onClick={cardsLoading}>
           Ещё
         </button>
       )}

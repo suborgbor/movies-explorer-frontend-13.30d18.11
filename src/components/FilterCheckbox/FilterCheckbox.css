@@ -1,5 +1,5 @@
 .checkbox {
-  display: inline-block;
+  display: flex;
   cursor: pointer;
   position: relative;
 }
@@ -18,7 +18,7 @@
   font-style: normal;
   font-weight: 400;
   line-height: 18px;
-  padding-left: 38px;
+  padding:  0 0 0 50px;
   padding-right: 54px;
 }
 
@@ -26,11 +26,11 @@
   display: block;
   content: '';
   position: absolute;
-  right: 0;
+  left: 0;
   top: 0;
   width: 36px;
   height: 20px;
-  background-color: rgb(183, 183, 183);
+  background-color: rgb(51, 48, 48);
   border-radius: 18px;
   transition: background-color 0.3s;
 }
@@ -39,10 +39,10 @@
   display: block;
   content: '';
   position: absolute;
-  left: 178px;
-  top: 5px;
-  width: 10px;
-  height: 10px;
+  top: 2px;
+  left: 0;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
   background-color: rgba(245, 245, 245, 1);
   transition: background-color 0.3s, left 0.3s;
@@ -57,26 +57,28 @@
 }
 
 .checkbox__input:checked + .checkbox__inner::after {
-  left: 194px;
+  left: 20px;
   background-color: rgba(255, 255, 255, 1);
 }
 
 @media screen and (max-width: 800px) {
   .checkbox__inner {
+    justify-content: end;
     padding-left: 0;
     padding-right: 44px;
   }
 
   .checkbox__inner:after {
-    left: 132px;
-    top: 5px;
-    width: 8px;
-    height: 8px;
+    left: 125px;
+    top: 2px;
+    width: 16px;
+    height: 16px;
   }
 
   .checkbox__inner:before {
-    width: 34px;
-    height: 19px;
+    left: 125px;
+    width: 36px;
+    height: 20px;
   }
 
   .checkbox__input:checked + .checkbox__inner::before {
@@ -84,12 +86,12 @@
   }
 
   .checkbox__input:checked + .checkbox__inner::after {
-    left: 146px;
+    left: 145px;
     background-color: rgba(255, 255, 255, 1);
   }
 }
 
-@media screen and (max-width: 400px) {
+@media screen and (max-width: 500px) {
   .checkbox__inner {
     font-size: 11px;
     font-style: normal;
@@ -98,11 +100,8 @@
     padding-right: 48px;
   }
 
-  .checkbox__inner:after {
-    left: 118px;
-  }
-
-  .checkbox__input:checked + .checkbox__inner::after {
-    left: 132px;
+  .checkbox {
+    display: flex;
+    margin: 0 auto;
   }
 }

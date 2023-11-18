@@ -22,7 +22,7 @@ const Footer = () => {
             </li>
             <li>
               <a
-                href="https://github.com/1qqoo"
+                href="https://github.com/ekagor"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="footer__link"

@@ -6,20 +6,17 @@ import Movies from '../Movies/Movies';
 import Profile from '../Profile/Profile';
 import Register from '../Register/Register';
 import SavedMovies from '../SavedMovies/SavedMovies';
-
 import './App.css';
 import NotFound from '../NotFound/NotFound';
-
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import CurrentUserContext from '../../contexts/CurrentUserContext';
 import { MoviesProvider } from '../../contexts/MoviesContext';
-
 import ProtectedRoutes from '../../utils/ProtectedRoutes';
 import api from '../../utils/MainApi';
 import Preloader from '../Preloader/Preloader';
 import InfoTooltip from '../InfoTooltip/InfoTooltip';
-import { correctMovieFormat } from '../../utils/utils';
+import { movieCardTemplate } from '../../utils/utils';
 import { getMovies } from '../../utils/MoviesApi';
 
 const App = () => {
@@ -27,26 +24,18 @@ const App = () => {
   const headerPaths = ['/', '/movies', '/saved-movies', '/profile'];
   const footerPaths = ['/', '/movies', '/saved-movies'];
 
-  const navigate = useNavigate();
-
-  // Стейты состояния пользователя
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [token, setToken] = useState(localStorage.getItem('jwt'));
   const [currentUser, setCurrentUser] = useState({});
-
-  // Стейты ошибок
   const [loginError, setLoginError] = useState('');
   const [isLoading, setIsLoading] = useState(true);
-  const [isStatus, setIsStatus] = useState({
-    status: '',
-    message: '',
-  });
+  const [isStatus, setIsStatus] = useState({status: '', message: '',});
   const [movies, setMovies] = useState(returnLocalFilms());
   const [savedMovies, setSavedMovies] = useState([]);
-
   const [isOpenInfoTooltip, setIsOpenInfoTooltip] = useState(false);
 
-  // Закрытие попапов
+  const navigate = useNavigate();
+
   const closeAllPopups = () => {
     setIsOpenInfoTooltip(false);
   };
@@ -56,8 +45,6 @@ const App = () => {
   const goBack = () => {
     navigate(-1);
   };
-
-  // ====================================
 
   useEffect(() => {
     if (!token) {
@@ -92,7 +79,6 @@ const App = () => {
     }
   }, [isLoggedIn]);
 
-  // Функционал============
   const addMovieToSavedMovies = (movie) => {
     api
       .createMovie(movie)
@@ -118,7 +104,7 @@ const App = () => {
   const getAllMovies = () => {
     getMovies()
       .then((newMovies) => {
-        const formattedMovies = correctMovieFormat(newMovies);
+        const formattedMovies = movieCardTemplate(newMovies);
         setMovies(formattedMovies);
         localStorage.setItem('movies', JSON.stringify(formattedMovies));
       })
@@ -135,16 +121,10 @@ const App = () => {
     );
   }
 
-  // Регистрация, авторизация =================================================>
-  const registerUser = async (userData) => {
+  const registering = async (userData) => {
     try {
-      await api.registerUser(userData);
-      setIsOpenInfoTooltip(true);
-      setIsStatus({
-        status: true,
-        message: 'Вы успешно зарегистрировались!',
-      });
-      loginUser({ email: userData.email, password: userData.password });
+      await api.registering(userData);
+      logining({ email: userData.email, password: userData.password });
     } catch (err) {
       setIsOpenInfoTooltip(true);
       setIsStatus({
@@ -155,14 +135,9 @@ const App = () => {
     }
   };
 
-  const loginUser = async (loginData) => {
+  const logining = async (loginData) => {
     try {
-      const res = await api.loginUser(loginData);
-      setIsOpenInfoTooltip(true);
-      setIsStatus({
-        status: true,
-        message: 'Вы успешно вошли!',
-      });
+      const res = await api.logining(loginData);      
       setToken(res.token);
       setIsLoggedIn(true);
       api.setAuthHeaders(res.token);
@@ -190,10 +165,9 @@ const App = () => {
     navigate('/');
   };
 
-  // Обновить данные профиля===========================>
-  const updateUser = (name, email) => {
+  const updating = (name, email) => {
     return api
-      .updateUserData(name, email)
+      .updatingData(name, email)
       .then((newUserData) => {
         setCurrentUser(newUserData);
         setIsOpenInfoTooltip(true);
@@ -210,9 +184,7 @@ const App = () => {
         });
       });
   };
-  // ============================================================
 
-  // Отрисовка
   if (isLoading) {
     return <Preloader />;
   }
@@ -233,7 +205,7 @@ const App = () => {
                 element={
                   <Login
                     isLoggedIn={isLoggedIn}
-                    loginUser={loginUser}
+                    logining={logining}
                     errorMessage={loginError}
                     title="Вход"
                     buttonText="Войти"
@@ -245,7 +217,7 @@ const App = () => {
                 element={
                   <Register
                     isLoggedIn={isLoggedIn}
-                    registerUser={registerUser}
+                    registering={registering}
                     title={'Регистрация'}
                     buttonText={'Зарегистрироваться'}
                   />
@@ -264,8 +236,8 @@ const App = () => {
                   <Movies
                     getMovies={getAllMovies}
                     movies={movies}
-                    onToggleSave={addMovieToSavedMovies}
-                    onDeleteSave={deleteMovieToSavedMovies}
+                    addMovie={addMovieToSavedMovies}
+                    onDeleteFilm={deleteMovieToSavedMovies}
                     checkSavedMovies={checkSavedMovies}
                   />
                 }
@@ -275,7 +247,7 @@ const App = () => {
                 element={
                   <SavedMovies
                     movies={savedMovies}
-                    onDeleteSave={deleteMovieToSavedMovies}
+                    onDeleteFilm={deleteMovieToSavedMovies}
                     checkSavedMovies={checkSavedMovies}
                   />
                 }
@@ -285,8 +257,8 @@ const App = () => {
                 path="/profile"
                 element={
                   <Profile
-                    onLogOut={logOut}
-                    updateUser={updateUser}
+                    loginingOut={logOut}
+                    updating={updating}
                   />
                 }
               ></Route>

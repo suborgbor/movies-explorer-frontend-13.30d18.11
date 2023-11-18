@@ -1,39 +1,39 @@
-import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import SearchForm from '../SearchForm/SearchForm';
+import MoviesCardList from '../MoviesCardList/MoviesCardList';
+import {useState} from 'react';
+import {useMoviesContext} from '../../contexts/MoviesContext';
 import './SavedMovies.css';
-import { useMoviesContext } from '../../contexts/MoviesContext';
-import { useState } from 'react';
 
-const SavedMovies = ({ movies, onDeleteSave, checkSavedMovies }) => {
-  const { searched, setSearched } = useMoviesContext();
 
-  const [searchQuerySave, setSearchQuerySave] = useState('');
-  const [shortFilmSave, setShortFilmSave] = useState(false);
+const SavedMovies = ({movies, onDeleteFilm, checkSavedMovies}) => {
+  const {searched, setSearchedMovies} = useMoviesContext();
+  const [initialSearchValueSave, setInitialSearchValueSave] = useState('');
+  const [movieSaveShort, setMovieSaveShort] = useState(false);
 
-  const handleSearchChange = (query) => {
-    setSearchQuerySave(query);
-    setSearched(true);
+  const handleSearchMovies = (search) => {
+    setInitialSearchValueSave(search);
+    setSearchedMovies(true);
   };
 
-  const handleShortFilmChange = (checked) => {
-    setShortFilmSave(checked);
-    localStorage.setItem('shortFilmSave', checked);
+  const handleShortChange = (checked) => {
+    setMovieSaveShort(checked);
+    localStorage.setItem('movieSaveShort', checked);
   };
 
   return (
     <main className="saved-movies">
       <SearchForm
-        onSearch={handleSearchChange}
-        onShortFilmChange={handleShortFilmChange}
-        shortFilm={shortFilmSave}
+        searchMovies={handleSearchMovies}
+        onShortChange={handleShortChange}
+        shortMovie={movieSaveShort}
       />
       <MoviesCardList
-        onDeleteSave={onDeleteSave}
         searched={searched}
         movies={movies}
-        searchQuery={searchQuerySave}
-        shortFilm={shortFilmSave}
+        initialSearchValue={initialSearchValueSave}
+        shortMovie={movieSaveShort}
         checkSavedMovies={checkSavedMovies}
+        onDeleteFilm={onDeleteFilm}
       />
     </main>
   );

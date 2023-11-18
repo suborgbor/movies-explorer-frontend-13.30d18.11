@@ -1,25 +1,25 @@
-const SHORTMOVIES_DURATION = 40;
+const SHORT_MOVIES_DURATION = 40;
 
-const SCREEN_SIZE = {
+const VIEW_SIZE = {
   M: 768,
   L: 1280,
 };
 
-const MOVIES_AMOUNT = {
+const INIT_CARDS = {
   S: 5,
   M: 8,
   L: 16,
 };
 
-const ADDED_MOVIES_AMOUNT = {
+const PLUS_INIT_CARDS = {
   S: 1,
   M: 2,
   L: 4,
 };
 
 export {
-  SHORTMOVIES_DURATION,
-  SCREEN_SIZE,
-  MOVIES_AMOUNT,
-  ADDED_MOVIES_AMOUNT,
+  SHORT_MOVIES_DURATION,
+  VIEW_SIZE,
+  INIT_CARDS,
+  PLUS_INIT_CARDS,
 };
